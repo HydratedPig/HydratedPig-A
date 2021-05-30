@@ -14,3 +14,10 @@ Here are some ideas to get you started:
 - 😄 Pronouns: ...
 - ⚡ Fun fact: ...
 -->
+
+
+![visitors](https://visitor-badge.glitch.me/badge?page_id=hydratedpig.hydratedpig)
+
+
+
+[![HydratedPig's GitHub stats](https://github-readme-stats.vercel.app/api?username=HydratedPig)](https://github.com/anuraghazra/github-readme-stats)
