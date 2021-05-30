@@ -1,6 +1,6 @@
-import path from 'path'
-import { defineConfig } from 'vite'
-import reactRefresh from '@vitejs/plugin-react-refresh'
+import path from 'path';
+import { defineConfig } from 'vite';
+import reactRefresh from '@vitejs/plugin-react-refresh';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -8,12 +8,13 @@ export default defineConfig({
   // base: '/',
   // mode: 'development' | 'production',
   // define: { VITE_HH: 'import.meta.env.VITE_DEFINE_CONFIG' },
-  plugins: [reactRefresh()],
+  plugins: [ reactRefresh() ],
   // publicDir: 'public',
   // cacheDir: 'node_modules/.vite',
   resolve: {
-    alias:  {
-      '/@': path.resolve(__dirname, 'src')
+    alias: {
+      // vite 2.0 这里的 alias 字符串不能以 '/' 结尾
+      '@': path.resolve(__dirname, 'src'),
     },
     // dedupe: [],
     // conditions: [],
@@ -22,14 +23,14 @@ export default defineConfig({
     preprocessorOptions: {
       less: {
         modifyVars: {
-          'owner-prefix': 'hydrated-pig',
+          prefix: 'hydrated-pig',
           'primary-color': '#FDFD7D',
           'compare-color': '#5AA02D',
           'complementary-color': '#9B7BFC',
         },
         javascriptEnabled: true,
-      }
-    }
+      },
+    },
   },
   server: {
     host: '127.0.0.1',
@@ -51,5 +52,8 @@ export default defineConfig({
     //     rewrite: (path) => path.replace(/^\/fallback/, '')
     //   }
     // }
-  }
-})
+  },
+  build: {
+    sourcemap: true,
+  },
+});

@@ -1,2 +1,2 @@
 declare module '.less';
-declare var VITE_HH: string;
+declare let VITE_HH: string;
