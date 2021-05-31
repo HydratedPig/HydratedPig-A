@@ -1,6 +1,7 @@
 import path from 'path';
 import { defineConfig } from 'vite';
 import reactRefresh from '@vitejs/plugin-react-refresh';
+import markdownPlugin, { Mode } from 'vite-plugin-markdown';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -8,7 +9,7 @@ export default defineConfig({
   // base: '/',
   // mode: 'development' | 'production',
   // define: { VITE_HH: 'import.meta.env.VITE_DEFINE_CONFIG' },
-  plugins: [ reactRefresh() ],
+  plugins: [ reactRefresh(), markdownPlugin({ mode: [ Mode.TOC, Mode.REACT ] }) ],
   // publicDir: 'public',
   // cacheDir: 'node_modules/.vite',
   resolve: {
