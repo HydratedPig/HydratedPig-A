@@ -2,9 +2,7 @@ import path from 'path';
 import { defineConfig } from 'vite';
 import reactRefresh from '@vitejs/plugin-react-refresh';
 
-import VitePluginMarkdown, { Mode } from 'vite-plugin-markdown';
-
-import Plugin from './mdLoader';
+import MarkdownLoader from './loader/markdown';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,7 +10,7 @@ export default defineConfig({
   // base: '/',
   // mode: 'development' | 'production',
   // define: { VITE_HH: 'import.meta.env.VITE_DEFINE_CONFIG' },
-  plugins: [ reactRefresh(), Plugin(), VitePluginMarkdown({ mode: [ Mode.HTML ] }) ],
+  plugins: [ reactRefresh(), MarkdownLoader() ],
   // publicDir: 'public',
   // cacheDir: 'node_modules/.vite',
   resolve: {

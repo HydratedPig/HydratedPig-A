@@ -8,6 +8,7 @@ import './index.less';
 
 interface LoadingProps extends BasicProps {
   size?: 'small' | 'default' | 'large',
+  loading?: boolean
 }
 
 export function Mask(props: BasicProps): React.ReactElement {
@@ -27,7 +28,7 @@ export function Mask(props: BasicProps): React.ReactElement {
 }
 
 function Loading(props: LoadingProps): React.ReactElement {
-  const { className, size = 'default', children } = props;
+  const { className, size = 'default', children, loading = true } = props;
   const { getPrefixCls } = React.useContext(ConfigContext);
   const prefixCls = getPrefixCls();
 
@@ -37,11 +38,17 @@ function Loading(props: LoadingProps): React.ReactElement {
   );
 
   return (
-    <div className={loadingClassName}>
-      <img src={logo} alt="logo" />
-      { children }
-      <Mask />
-    </div>
+    <>
+      {
+        loading ? (
+          <div className={loadingClassName}>
+            <img src={logo} alt="logo" />
+            { children }
+            <Mask />
+          </div>
+        ) : children
+      }
+    </>
   );
 }
 
