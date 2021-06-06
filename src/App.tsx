@@ -2,17 +2,15 @@ import React, { useState } from 'react';
 import logo from '@/assets/logo.svg';
 import '@/App.less';
 import Loading from '@/components/loading';
-import { toc, ReactComponent } from '@/xx.md';
+import { html } from '@/pages/resume.md';
 
 function App(): React.ReactElement {
   const [ count, setCount ] = useState(0);
-  console.log(toc);
-
   return (
     <div className="App">
       <Loading size="large">
         <header className="App-header">
-          <ReactComponent />
+          <div dangerouslySetInnerHTML={{ __html: html || '' }} />
           <img src={logo} className="App-logo" alt="logo" />
           <p>Hello Vite + React!</p>
           <p>
