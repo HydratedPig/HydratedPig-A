@@ -35,6 +35,7 @@ module.exports = {
   //   },
   // ],
   rules: {
+    'react/no-danger': 0,
     'array-bracket-spacing': [ 'error', 'always', {
       objectsInArrays: false,
       arraysInArrays: false,

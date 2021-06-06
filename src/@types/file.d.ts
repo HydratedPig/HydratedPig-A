@@ -4,14 +4,10 @@ declare module '*.md' {
 
   // When "Mode.TOC" is requested
   const toc: { level: string, content: string }[];
-
-  // When "Mode.React" is requested. VFC could take a generic like React.VFC<{ MyComponent: TypeOfMyComponent }>
-  // import React from 'react';
-
-  const ReactComponent: React.VFC;
+  const html: string;
 
   // Modify below per your usage
   export {
-    attributes, toc, ReactComponent,
+    attributes, toc, html,
   };
 }
