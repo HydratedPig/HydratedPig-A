@@ -109,8 +109,8 @@ html body > p:last-child {
   margin-bottom: 0;
 }
 .resume-hr {
-  height: 1px;
-  border: 1px bold #111;
+  height: 0px;
+  border: 0.5px solid #111;
   margin: 10px 0;
 }
 .resume-three-column {

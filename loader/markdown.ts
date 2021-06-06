@@ -6,13 +6,17 @@ function mdTransform(code: string, id: string): TransformResult {
   const res = {
     code,
   };
-  res.code = res.code.replace(/\$\\triangleright\$/g, '▹');
+  res.code = `
+    'use strict';
+    const html = ${JSON.stringify(res.code.replace(/\$\\triangleright\$/g, '▹'))};
+    export default html;
+  `;
 
   return res;
 }
 
 export const plugin = (): Plugin => ({
-  name: 'vite-plugin-owner-markdown',
+  name: 'vite-plugin-markdown-loader',
   enforce: 'pre',
   transform: (code, id) => {
     const res = mdTransform(code, id);
