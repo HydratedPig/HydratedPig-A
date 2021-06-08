@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import reactRefresh from '@vitejs/plugin-react-refresh';
 
 import MarkdownLoader from './loader/markdown';
+import HydrateLoader from './loader/hydrate';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -10,7 +11,8 @@ export default defineConfig({
   // base: '/',
   // mode: 'development' | 'production',
   // define: { VITE_HH: 'import.meta.env.VITE_DEFINE_CONFIG' },
-  plugins: [ reactRefresh(), MarkdownLoader() ],
+  // 和 Webpack 的 use 加载方式一致，从后向前
+  plugins: [ reactRefresh(), HydrateLoader(), MarkdownLoader() ],
   // publicDir: 'public',
   // cacheDir: 'node_modules/.vite',
   resolve: {

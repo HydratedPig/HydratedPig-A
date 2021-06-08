@@ -3,6 +3,9 @@ import logo from '@/assets/logo.svg';
 import '@/App.less';
 import Loading from '@/components/loading';
 import Resume from '@/pages/resume';
+import hydrate from '@/blogs/index.hydrate';
+
+console.log(hydrate);
 
 function App(): React.ReactElement {
   const [ loading, setLoading ] = useState(true);
