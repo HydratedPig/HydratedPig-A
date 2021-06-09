@@ -6,11 +6,29 @@ import path from 'path';
 interface HydrateResult {
   order?: number,
   title?: string,
+  filename: string,
+  modifiedAt: Date,
+  createdAt: Date,
   content: string,
 }
 
 function trimStr(value?: string): string {
-  return (value || '').trim();
+  return value && value.trim();
+}
+
+function getConfigs(regResult: RegExpExecArray): {[key: string]: string | undefined} {
+  const configStr = regResult[1];
+  const map = configStr
+    .split('\n')
+    .filter(str => str.trim() !== '')
+    .reduce((res, arr) => {
+      const k = trimStr(arr[0]);
+      if (k) {
+        res[k] = trimStr(arr[1]);
+      }
+      return res;
+    }, {});
+  return map;
 }
 
 class Hydrate {
@@ -20,35 +38,31 @@ class Hydrate {
 
   response: Array<HydrateResult>;
 
+  exportValue: string;
+
   constructor(files: string[], fileDir: string) {
     this.files = files;
     this.fileDir = fileDir;
   }
 
-  static pipeline(filePath: string): HydrateResult {
-    let content = fs.readFileSync(filePath).toString().trim();
+  static pipeline(filePath: string, filename: string): HydrateResult {
+    if (!filename.endsWith('.md')) return null;
+    const rawContent = fs.readFileSync(filePath).toString().trim();
     const configReg = /^---([^---]*)---/s;
-    const regResult = configReg.exec(content);
-    let order: number;
-    let title: string;
-    if (regResult) {
-      const configs = regResult && regResult[1];
-      const map = new Map(
-        configs
-          .split('\n')
-          .map((config): [string, string] => {
-            const sliceArr = config.split(/: */);
-            return [ trimStr(sliceArr[0]), trimStr(sliceArr[1]) ];
-          }),
-      );
-      order = +map.get('order');
-      title = map.get('title');
-    }
+    const regResult: RegExpExecArray = configReg.exec(rawContent);
 
-    content = content.replace(configReg, '').trim();
+    const config = regResult ? getConfigs(regResult) : {};
+
+    const content = rawContent.replace(configReg, '').trim();
+
+    const stat = fs.statSync(filePath);
+
     return {
-      order,
-      title,
+      order: config.order ? +config.order : undefined,
+      title: config.title,
+      filename,
+      modifiedAt: stat.mtime,
+      createdAt: stat.birthtime,
       content: JSON.stringify(content),
     };
   }
@@ -56,9 +70,16 @@ class Hydrate {
   initial() {
     this.response = this.files.map(filename => {
       const filePath = path.join(this.fileDir, filename);
-      const result = Hydrate.pipeline(filePath);
+      const result = Hydrate.pipeline(filePath, filename);
       return result;
     }).sort((a, b) => a.order - b.order);
+
+    this.exportValue = `
+      function getResult() {
+        return ${JSON.stringify(this.response)}
+      }
+      export default getResult();
+    `;
   }
 }
 
@@ -69,17 +90,9 @@ function transformer(code: string, id: string): TransformResult {
   const files = fs.readdirSync(fileDir).filter(name => name !== filename);
   const hydrate = new Hydrate(files, fileDir);
   hydrate.initial();
-  const { response } = hydrate;
 
-  const result = `
-    function getResult() {
-      return ${JSON.stringify(response)}
-    }
-    export default getResult();
-  `;
-  console.log(response);
   return {
-    code: result,
+    code: hydrate.exportValue,
   };
 }
 
