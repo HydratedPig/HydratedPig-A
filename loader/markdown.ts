@@ -25,4 +25,3 @@ export const plugin = (): Plugin => ({
 });
 
 export default plugin;
-exports.default = plugin;

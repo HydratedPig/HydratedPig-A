@@ -50,7 +50,7 @@ Github: https://github.com/HydratedPig/HydratedPig
   > 智能对话平台是一款含有多种语义理解和语义搜索计算模型，基于意图探测和知识推理，生成拟人化的语句并可以提供人机协同服务的智能对话机器人平台。
 
   **技术栈：** vue + vue-router + vuex + eggjs + react-native
-  $\triangleright$ 独立负责负责智能对话项目，对接通用版需求，前期进行数据库设计、前后端开发，后期完成测试以及环境部署 
+  $\triangleright$ 独立负责智能对话项目，对接通用版需求，前期进行数据库设计、前后端开发，后期完成测试以及环境部署 
   $\triangleright$ 对接定制化业务，基于对话逻辑，运用react-native从零开始搭建Android/iOS 客户端，完成与甲⽅的SSO 登录对接，交付源码 
   $\triangleright$ 应用 i18n 到智能对话客户端中
   $\triangleright$ 测试并提升 ant-design-vue-pro 的版本
@@ -110,7 +110,7 @@ html body > p:last-child {
 }
 .resume-hr {
   height: 0px;
-  border: 0.5px solid #111;
+  border: 0.5px solid #888;
   margin: 10px 0;
 }
 .resume-three-column {
