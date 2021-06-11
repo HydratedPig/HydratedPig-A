@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 
 interface HydrateResult {
-  order?: number,
+  order: number,
   title?: string,
   filename: string,
   modifiedAt: Date,
@@ -12,16 +12,16 @@ interface HydrateResult {
   content: string,
 }
 
-function trimStr(value?: string): string {
+function trimStr(value?: string): string | undefined {
   return value && value.trim();
 }
 
-function getConfigs(regResult: RegExpExecArray): {[key: string]: string | undefined} {
-  const configStr = regResult[1];
+function getConfigs(regResult: RegExpExecArray): { [key: string]: string | undefined } {
+  const configStr: string = regResult[1];
   const map = configStr
     .split('\n')
     .filter(str => str.trim() !== '')
-    .reduce((res, arr) => {
+    .reduce((res: { [key: string]: string | undefined }, arr) => {
       const k = trimStr(arr[0]);
       if (k) {
         res[k] = trimStr(arr[1]);
@@ -43,13 +43,14 @@ class Hydrate {
   constructor(files: string[], fileDir: string) {
     this.files = files;
     this.fileDir = fileDir;
+    this.response = [];
+    this.exportValue = 'export default ""';
   }
 
   static pipeline(filePath: string, filename: string): HydrateResult {
-    if (!filename.endsWith('.md')) return null;
     const rawContent = fs.readFileSync(filePath).toString().trim();
     const configReg = /^---([^---]*)---/s;
-    const regResult: RegExpExecArray = configReg.exec(rawContent);
+    const regResult: RegExpExecArray | null = configReg.exec(rawContent);
 
     const config = regResult ? getConfigs(regResult) : {};
 
@@ -58,7 +59,7 @@ class Hydrate {
     const stat = fs.statSync(filePath);
 
     return {
-      order: config.order ? +config.order : undefined,
+      order: config.order ? +config.order : Infinity,
       title: config.title,
       filename,
       modifiedAt: stat.mtime,
