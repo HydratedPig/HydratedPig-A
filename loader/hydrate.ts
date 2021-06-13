@@ -21,7 +21,8 @@ function getConfigs(regResult: RegExpExecArray): { [key: string]: string | undef
   const map = configStr
     .split('\n')
     .filter(str => str.trim() !== '')
-    .reduce((res: { [key: string]: string | undefined }, arr) => {
+    .reduce((res: { [key: string]: string | undefined }, str) => {
+      const arr = str.split(/: (.+)/);
       const k = trimStr(arr[0]);
       if (k) {
         res[k] = trimStr(arr[1]);
