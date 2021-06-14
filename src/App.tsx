@@ -1,26 +1,20 @@
-import React, { useState } from 'react';
-import logo from '@/assets/logo.svg';
-import '@/App.less';
-import Loading from '@/components/loading';
-import Resume from '@/pages/resume';
-import hydrate from '@/blogs/index.hydrate';
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import Router from '@/router';
+import Layout from '@/components/layout';
 
-console.log(hydrate);
+const headers = [
+  { title: '主页', to: '/homepage', id: 'homepage' },
+  { title: '博客', to: '/blog', id: 'blog' },
+];
 
 function App(): React.ReactElement {
-  const [ loading, setLoading ] = useState(true);
-  setTimeout(() => setLoading(false), 2000);
   return (
-    <Loading size="large" loading={loading}>
-      {
-        loading ? (
-          <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <p>Hello Vite + React!</p>
-          </header>
-        ) : <Resume />
-      }
-    </Loading>
+    <BrowserRouter basename="/">
+      <Layout headers={headers}>
+        <Router />
+      </Layout>
+    </BrowserRouter>
   );
 }
 

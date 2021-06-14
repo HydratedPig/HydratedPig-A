@@ -11,6 +11,7 @@ declare module '*.hydrate' {
 declare interface HydrateResult {
   order?: number,
   title?: string,
+  id: string,
   filename: string,
   modifiedAt: Date,
   createdAt: Date,

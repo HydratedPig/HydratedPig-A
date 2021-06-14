@@ -1,8 +1,7 @@
 /* eslint-disable react/no-danger */
 import React from 'react';
 import MarkdownIt from 'markdown-it';
-import classNames from 'classnames';
-import ConfigContext from '@/components/context';
+import { useClassNames } from '@/utils/hooks';
 
 import './index.less';
 
@@ -28,11 +27,8 @@ function Markdown(props: MarkdownProps): React.ReactElement {
     ...options,
   });
 
-  const { getPrefixCls } = React.useContext(ConfigContext);
-  const prefixCls = getPrefixCls();
-
-  const maskClassName = classNames(
-    [ `${prefixCls}-markdown` ],
+  const maskClassName = useClassNames(
+    prefixCls => ([ `${prefixCls}-markdown` ]),
     className,
   );
 
