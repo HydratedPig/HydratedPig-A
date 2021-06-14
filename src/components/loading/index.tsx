@@ -1,7 +1,6 @@
-import classNames from 'classnames';
 import React from 'react';
 
-import ConfigContext from '@/components/context';
+import { useClassNames } from '@/utils/hooks';
 import logo from '@/assets/logo.svg';
 
 import './index.less';
@@ -13,11 +12,9 @@ interface LoadingProps extends BasicProps {
 
 export function Mask(props: BasicProps): React.ReactElement {
   const { className, children } = props;
-  const { getPrefixCls } = React.useContext(ConfigContext);
-  const prefixCls = getPrefixCls();
 
-  const maskClassName = classNames(
-    [ `${prefixCls}-mask` ],
+  const maskClassName = useClassNames(
+    prefixCls => ([ `${prefixCls}-mask` ]),
     className,
   );
   return (
@@ -29,11 +26,9 @@ export function Mask(props: BasicProps): React.ReactElement {
 
 function Loading(props: LoadingProps): React.ReactElement {
   const { className, size = 'default', children, loading = true } = props;
-  const { getPrefixCls } = React.useContext(ConfigContext);
-  const prefixCls = getPrefixCls();
 
-  const loadingClassName = classNames(
-    [ `${prefixCls}-loading`, `${prefixCls}-loading-${size}` ],
+  const loadingClassName = useClassNames(
+    prefixCls => ([ `${prefixCls}-loading`, `${prefixCls}-loading-${size}` ]),
     className,
   );
 

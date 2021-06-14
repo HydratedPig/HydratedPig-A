@@ -2,10 +2,12 @@ import { Plugin } from 'vite';
 import { TransformResult } from 'rollup';
 import fs from 'fs';
 import path from 'path';
+import md5 from 'md5';
 
 interface HydrateResult {
   order: number,
   title?: string,
+  id: string,
   filename: string,
   modifiedAt: Date,
   createdAt: Date,
@@ -49,7 +51,8 @@ class Hydrate {
   }
 
   static pipeline(filePath: string, filename: string): HydrateResult {
-    const rawContent = fs.readFileSync(filePath).toString().trim();
+    const fileContent = fs.readFileSync(filePath);
+    const rawContent = fileContent.toString().trim();
     const configReg = /^---([^---]*)---/s;
     const regResult: RegExpExecArray | null = configReg.exec(rawContent);
 
@@ -62,10 +65,12 @@ class Hydrate {
     return {
       order: config.order ? +config.order : Infinity,
       title: config.title,
+      id: md5(fileContent),
       filename,
+      // TODO these are the date with utf-8
       modifiedAt: stat.mtime,
       createdAt: stat.birthtime,
-      content: JSON.stringify(content),
+      content,
     };
   }
 
@@ -89,7 +94,7 @@ function transformer(code: string, id: string): TransformResult {
   if (!id.endsWith('.hydrate')) return null;
   const fileDir = path.dirname(id);
   const filename = path.basename(id);
-  const files = fs.readdirSync(fileDir).filter(name => name !== filename);
+  const files = fs.readdirSync(fileDir).filter(name => name !== filename && name.endsWith('.md'));
   const hydrate = new Hydrate(files, fileDir);
   hydrate.initial();
 
